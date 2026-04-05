@@ -14,7 +14,37 @@ import { payloadPlugins } from './plugins'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const databaseUrl = process.env.DATABASE_URL || process.env.MONGODB_URI || ''
+
+if (!databaseUrl) {
+  console.warn(
+    '[payload] DATABASE_URL or MONGODB_URI is not set — API routes (signup, login) will fail to initialize Payload.',
+  )
+}
+
+if (!process.env.PAYLOAD_SECRET) {
+  console.warn(
+    '[payload] PAYLOAD_SECRET is not set — Payload initialization may fail or JWT auth will be invalid.',
+  )
+}
+
+/**
+ * Atlas + Vercel/serverless: bounded pool and timeouts.
+ * `family: 4` prefers IPv4 — Vercel often uses IPv6; if Atlas “Network Access” only allows
+ * IPv4 (or SRV resolves oddly), TLS can fail with “alert internal error” without this.
+ * Set `MONGODB_DISABLE_IPV4=1` to skip (e.g. IPv6-only clusters).
+ */
+const mongoConnectOptions = {
+  maxPoolSize: 10,
+  minPoolSize: 0,
+  serverSelectionTimeoutMS: 20000,
+  socketTimeoutMS: 45000,
+  ...(process.env.MONGODB_DISABLE_IPV4 === '1' ? {} : { family: 4 as const }),
+}
+
 export default buildConfig({
+  /** Surface real error details in API JSON during local dev (see routeError). */
+  debug: process.env.NODE_ENV === 'development',
   admin: {
     user: Users.slug,
     importMap: {
@@ -37,7 +67,8 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: mongooseAdapter({
-    url: process.env.DATABASE_URL || process.env.MONGODB_URI || '',
+    url: databaseUrl,
+    connectOptions: mongoConnectOptions,
   }),
   sharp,
   plugins: payloadPlugins,

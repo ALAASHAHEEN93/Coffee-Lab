@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
 :root {
   --bg-dark: #080706;
   --text-light: #f6f2ec;
   --text-muted: #d8cec3;
   --accent: #c78f6f;
+  --accent-copper: #a67c52;
   --line: rgba(246, 242, 236, 0.34);
   --focus-ring: #b98762;
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
 }
 
 * {
@@ -154,7 +158,7 @@ input:focus-visible {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 0.75rem 1rem;
+  gap: 0.75rem clamp(1.5rem, 4vw, 2.75rem);
   background: transparent;
   animation: fade-down 700ms ease-out both;
 }
@@ -165,25 +169,398 @@ input:focus-visible {
   justify-self: start;
   position: relative;
   min-width: 0;
+  padding-right: clamp(0.65rem, 2vw, 1.35rem);
+  margin-right: clamp(0.25rem, 1vw, 0.65rem);
 }
 
-.logoWrap img {
-  width: clamp(120px, 14vw, 200px);
+.logoHomeLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.logoHomeLink:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* CMS site logo only — built-in wordmark uses .coffeeLabBrandMark__iconImg (smaller) */
+.logoWrap img:not(.coffeeLabBrandMark__iconImg) {
+  width: clamp(88px, 9.5vw, 132px);
   height: auto;
   display: block;
 }
 
-.logoWrap::after {
-  content: '';
-  position: absolute;
-  left: clamp(28px, 3.2vw, 36px);
-  top: 12px;
-  width: 7px;
-  height: 7px;
+/* Built-in wordmark: flask + pulse dot + COFFEE/LAB + MOLECULAR ROASTERY + // + V.4.2 */
+.coffeeLabBrandMark {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  color: #fff;
+}
+
+.coffeeLabBrandMark__iconWrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.coffeeLabBrandMark__pulseDot {
+  flex-shrink: 0;
+  align-self: center;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
-  background: #e0a77f;
-  box-shadow: 0 0 8px rgba(224, 167, 127, 0.85);
-  animation: flash-dot 1.4s ease-in-out infinite;
+  background: #c9956e;
+  box-shadow: 0 0 7px rgba(201, 149, 110, 0.55);
+  animation: flash-dot 1.35s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.coffeeLabBrandMark__iconImg {
+  width: clamp(24px, 2.85vw, 28px);
+  height: clamp(24px, 2.85vw, 28px);
+  display: block;
+  object-fit: contain;
+}
+
+.coffeeLabBrandMark__textCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.04rem;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.coffeeLabBrandMark__titleRow {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  font-size: clamp(0.54rem, 0.72vw, 0.65rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.coffeeLabBrandMark__coffee {
+  color: #fff;
+}
+
+.coffeeLabBrandMark__lab {
+  color: #c9956e;
+}
+
+.coffeeLabBrandMark__tagRow {
+  display: flex;
+  align-items: center;
+  margin-top: 0.02rem;
+}
+
+.coffeeLabBrandMark__tag {
+  font-size: clamp(0.38rem, 0.5vw, 0.46rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.coffeeLabBrandMark__slashes {
+  font-size: clamp(0.38rem, 0.5vw, 0.46rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.2;
+}
+
+.coffeeLabBrandMark__ver {
+  font-size: clamp(0.35rem, 0.46vw, 0.42rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.coffeeLabBrandMark--footer {
+  transform: scale(0.92);
+  transform-origin: left center;
+}
+
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__iconImg {
+  width: 19px;
+  height: 19px;
+}
+
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__pulseDot {
+  width: 5px;
+  height: 5px;
+  box-shadow: 0 0 5px rgba(201, 149, 110, 0.45);
+}
+
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__titleRow {
+  font-size: 0.48rem;
+}
+
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__tag,
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__slashes {
+  font-size: 0.31rem;
+}
+
+.coffeeLabBrandMark--footer .coffeeLabBrandMark__ver {
+  font-size: 0.29rem;
+}
+
+/* Auth: login / signup / account — CoffeeLab shell */
+.authPage {
+  min-height: 100vh;
+  position: relative;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.authPageBg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(199, 143, 111, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 50%, rgba(80, 52, 36, 0.35), transparent 60%),
+    linear-gradient(180deg, #060606 0%, #0a0908 45%, #060606 100%);
+}
+
+.authTopbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid rgba(246, 242, 236, 0.08);
+}
+
+.authMain {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem 1.75rem 2.25rem;
+  border: 1px solid rgba(246, 242, 236, 0.14);
+  background: rgba(10, 9, 8, 0.72);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.authKicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 236, 0.45);
+}
+
+.authTitle {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 3.5vw, 1.95rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-light);
+}
+
+.authSubtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(216, 206, 195, 0.82);
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.authForm--account {
+  gap: 1.25rem;
+}
+
+.authField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.authLabel {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 236, 0.55);
+}
+
+.authInput {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(246, 242, 236, 0.18);
+  border-radius: 0;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.authInput::placeholder {
+  color: rgba(246, 242, 236, 0.28);
+}
+
+.authInput:hover {
+  border-color: rgba(199, 143, 111, 0.35);
+}
+
+.authInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.authError {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #f0d4c8;
+  background: rgba(120, 40, 30, 0.35);
+  border: 1px solid rgba(200, 90, 70, 0.45);
+}
+
+.authMuted {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(216, 206, 195, 0.75);
+}
+
+.authSubmit {
+  margin-top: 0.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #0f0c0a;
+  background: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.authSubmit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #ebe4dc;
+}
+
+.authSubmit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.authSubmit--link {
+  display: block;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.authSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  border: 1px solid rgba(246, 242, 236, 0.22);
+  background: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.authSecondary:hover {
+  border-color: rgba(199, 143, 111, 0.55);
+  color: #fff;
+}
+
+.authFoot {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: rgba(216, 206, 195, 0.72);
+  text-align: center;
+}
+
+.authLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.authLink:hover {
+  color: #ddb090;
+}
+
+.authDl {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.authDt {
+  margin: 0 0 0.2rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(246, 242, 236, 0.45);
+}
+
+.authDd {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--text-light);
+  word-break: break-word;
+}
+
+.authActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 480px) {
+  .authActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .authSecondary {
+    order: 2;
+  }
 }
 
 .navCluster {
@@ -232,14 +609,15 @@ input:focus-visible {
   align-items: center;
   justify-content: flex-end;
   justify-self: end;
-  gap: 0.5rem;
+  gap: 0.75rem;
   min-width: 0;
+  padding-left: clamp(0.35rem, 1.5vw, 0.85rem);
 }
 
 /* Language sits to the right of account / cart icons */
 .topbarRight .langToggle--inline {
-  margin-left: 0.35rem;
-  padding-left: 0.5rem;
+  margin-left: 0.15rem;
+  padding-left: clamp(0.55rem, 1.5vw, 0.85rem);
   border-left: 1px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -333,9 +711,9 @@ input:focus-visible {
 .navIcons {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.95rem;
   color: #e2d3c5;
-  padding-left: 0.35rem;
+  padding-left: 0.15rem;
   margin-left: 0;
 }
 
@@ -1631,12 +2009,16 @@ input:focus-visible {
   font-size: 2.1rem;
 }
 
-.cardFooter button {
+.cardFooter .blendCardCartBtn {
   flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: transparent;
   color: #d8ccc1;
-  min-height: 52px;
+  min-height: 54px;
   padding: 0.85rem 0.75rem;
   letter-spacing: 0.22em;
   font-size: 0.58rem;
@@ -1644,7 +2026,18 @@ input:focus-visible {
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.cardFooter button:active {
+.blendCardCartIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cardFooter .blendCardCartBtn:active {
   background: #fff;
   color: #111;
   border-color: #fff;
@@ -1866,156 +2259,1166 @@ input:focus-visible {
   text-align: center;
 }
 
-.vaultSection h2 {
+.vaultSectionTitle {
   margin: 0.5rem 0 0.45rem;
-  font-size: clamp(2.05rem, 4.8vw, 3.4rem);
-  font-weight: 400;
+  font-family: var(--font-serif);
+  font-size: clamp(2.15rem, 4.8vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #ffffff;
 }
 
 .vaultIntro {
-  margin: 0 auto 2rem;
-  color: #cbc1b8;
+  margin: 0 auto 2.25rem;
+  max-width: 36rem;
+  color: #9a928a;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .vaultGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: 1.35rem;
 }
 
+/* Classified vault — seal, serif title, spec lines, price + CTA row */
 .vaultCard {
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: linear-gradient(180deg, rgba(7, 9, 14, 0.98), rgba(5, 6, 9, 0.96));
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: radial-gradient(ellipse 80% 55% at 50% 18%, rgba(166, 124, 82, 0.12), transparent 55%),
+    #0a0a0a;
+  text-align: center;
+  padding: 1.5rem 1.25rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.vaultCardGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 22%, rgba(166, 124, 82, 0.18), transparent 55%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.vaultCardSeal {
+  position: relative;
+  z-index: 1;
+  width: 4.2rem;
+  height: 4.2rem;
+  margin-bottom: 0.65rem;
+  color: #a67c52;
+  filter: drop-shadow(0 0 12px rgba(166, 124, 82, 0.35));
+}
+
+.vaultSealSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.vaultCategory {
+  position: relative;
+  z-index: 1;
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #b8734a;
+  line-height: 1.35;
+}
+
+.vaultCategory--center {
+  margin: 0 0 0.5rem;
+}
+
+.vaultCardTitleSerif {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.vaultCardTitle {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.vaultCardSpecs {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  width: 100%;
   text-align: left;
 }
 
-.vaultTop {
-  position: relative;
-  height: 300px;
-  padding: 1rem 1.1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+.vaultCardSpecs li {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0.12rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
 }
 
-.vaultTop::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 58%, rgba(146, 116, 82, 0.15), transparent 52%);
-  pointer-events: none;
+.vaultSpecKey {
+  font-size: 0.48rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6f6a63;
 }
 
-.vaultScore {
-  display: flex;
-  justify-content: flex-end;
-  align-items: baseline;
-  gap: 0.5rem;
+.vaultSpecVal {
+  color: #c4bbb2;
+}
+
+.vaultCardDesc {
   position: relative;
   z-index: 1;
+  margin: 0 0 0.85rem;
+  color: #a39a91;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  text-align: left;
+  width: 100%;
 }
 
-.vaultScore small {
-  color: #6f737a;
-  letter-spacing: 0.22em;
-  font-size: 0.45rem;
+.vaultMetaRow {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.65rem;
+  width: 100%;
 }
 
-.vaultScore strong {
-  color: #aa8160;
-  font-size: 1.8rem;
+.vaultMetaKey {
+  color: #7a756d;
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.vaultMetaPill {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: #151515;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #5a5a5a;
+  font-size: 0.4rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.vaultDivider {
+  position: relative;
+  z-index: 1;
+  height: 1px;
+  width: 100%;
+  margin: 0.35rem 0 0.85rem;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.vaultCardFooter {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.vaultPriceStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  text-align: left;
+}
+
+.vaultPriceKey {
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7a756d;
+}
+
+.vaultPriceAmount {
+  font-size: 1.75rem;
   font-weight: 400;
+  font-family: var(--font-serif);
+  color: #ffffff;
+  letter-spacing: 0.02em;
 }
 
-.vaultLock {
-  width: 56px;
-  height: 56px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 0.35rem;
-  background: rgba(6, 8, 12, 0.9);
+.vaultAddToCartBtn {
+  flex: 1;
+  min-width: 0;
+  max-width: 58%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.55rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(18, 18, 18, 0.95);
+  color: #ffffff;
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.vaultLock svg {
-  width: 26px;
-  height: 26px;
+.vaultAddToCartBtn:hover {
+  background: #1f1f1f;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.vaultCartIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
   fill: none;
-  stroke: #7d8088;
-  stroke-width: 1.8;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.vaultTop p {
-  margin: 0;
+/* --- Blending Genome (after Classified Vault) --- */
+.blendingGenomeSection {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 4.5rem 1.8rem 3.5rem;
+  background: #000;
+  color: #f5f5f5;
+}
+
+.blendingGenomeHeader {
   text-align: center;
-  color: #59606a;
-  letter-spacing: 0.36em;
-  font-size: 0.48rem;
-  position: relative;
-  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto 2.25rem;
 }
 
-.vaultBody {
-  padding: 1rem 1rem 1.1rem;
-}
-
-.vaultBody small {
-  color: #9f957f;
-  font-size: 0.53rem;
-  letter-spacing: 0.24em;
-}
-
-.vaultBody h3 {
-  margin: 0.4rem 0 0.7rem;
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
-.vaultBody p {
-  margin: 0;
-  color: #c8bdb2;
-  font-size: 0.8rem;
-  line-height: 1.65;
-}
-
-.vaultMeta {
-  margin-top: 1rem;
+.genomeHelixWrap {
   display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.genomeHelixIcon {
+  width: 52px;
+  height: 52px;
+  color: var(--accent-copper);
+}
+
+.genomePhase {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-copper);
+  font-weight: 600;
+}
+
+.genomeTitle {
+  margin: 0 0 1rem;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(1.65rem, 4vw, 2.15rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+}
+
+.genomeIntro {
+  margin: 0 auto 1.75rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 52ch;
+}
+
+.genomeViewToggle {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  gap: 2px;
+}
+
+.genomeTabBtn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.55rem 1.35rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  background: transparent;
+  transition: background 0.2s, color 0.2s;
+}
+
+.genomeTabBtn--active {
+  background: var(--accent-copper);
+  color: #fff;
+}
+
+.genomeTabBtn:not(.genomeTabBtn--active):hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.genomeBackRow {
+  max-width: 1120px;
+  margin: 0 auto 1.25rem;
+}
+
+.genomeBackLink {
+  display: inline-flex;
+  align-items: center;
   gap: 0.35rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  transition: color 0.2s;
+}
+
+.genomeBackLink:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.genomeBackChevron {
+  width: 1rem;
+  height: 1rem;
+  transform: scaleX(-1);
+}
+
+.genomeDetailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.genomeCard {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.03) 0%, transparent 45%), #0a0a0a;
+  padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.genomeCardTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.genomeMutationRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.genomeMutationIcon {
+  color: var(--accent-copper);
+  display: flex;
+}
+
+.genomeDataCaps {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.genomeExtractionBlock {
+  text-align: right;
+}
+
+.genomeDataLabelSm {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.15rem;
+}
+
+.genomeGradeValue {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-copper);
+  letter-spacing: -0.03em;
+}
+
+.genomeSpecimenTitle {
+  margin: 0 0 0.65rem;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.genomeSpecimenTags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.genomeCodeTag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent-copper);
+}
+
+.genomeStatusPill {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.genomeBlockLabel {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-copper);
+  margin-bottom: 0.45rem;
+}
+
+.genomeSequenceBlock {
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent-copper);
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 0 6px 6px 0;
+}
+
+.genomeSequenceText {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.genomeSensoryBlock {
+  margin-bottom: 1.35rem;
+}
+
+.genomeSensoryQuote {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.genomeMetricsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.genomeMetricRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.genomeMetricPct {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.genomeBarTrack {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.genomeBarTrack--stability {
+  margin-top: 0.65rem;
+  height: 5px;
+}
+
+.genomeBarFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8b5a2b, var(--accent-copper));
+  transition: width 0.4s ease;
+}
+
+.genomeStabilityHead {
+  margin-bottom: 1.35rem;
+}
+
+.genomeStabilityRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.genomeStabilityBig {
+  font-size: clamp(2.5rem, 6vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #fff;
+}
+
+.genomeOptimalBadge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+.genomeTechList {
+  margin: 0 0 1.35rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.genomeTechList div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+  font-size: 0.72rem;
+}
+
+.genomeTechList dt {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.genomeTechList dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.genomePriceBlock {
+  margin-bottom: 1.1rem;
+}
+
+.genomePriceLine {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.genomePriceAmount {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.genomePerUnit {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.genomeAddToCartBtn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent-copper);
+  transition: filter 0.2s, transform 0.15s;
+}
+
+.genomeAddToCartBtn:hover {
+  filter: brightness(1.08);
+}
+
+.genomeAddToCartBtn:active {
+  transform: translateY(1px);
+}
+
+.genomeCartIcon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+.genomeLabNotesLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.45rem;
+}
+
+.genomeLockIcon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.genomeLabNotesText {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.genomeGalleryBody {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.genomeGalleryIntro {
+  text-align: center;
+  margin: 0 auto 1.75rem;
+  max-width: 48ch;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.genomeGalleryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.genomeGalleryTile {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1.1rem 1rem 1rem;
+  background: #0a0a0a;
+  text-align: left;
+}
+
+.genomeGalleryTileCode {
+  margin: 0 0 0.35rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-copper);
+}
+
+.genomeGalleryTileTitle {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.genomeGalleryTileMeta {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+}
+
+.genomeGalleryTileBtn {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-copper);
+  background: transparent;
+  border: 1px solid rgba(166, 124, 82, 0.45);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.genomeGalleryTileBtn:hover {
+  background: rgba(166, 124, 82, 0.12);
+  color: #fff;
+}
+
+@media (max-width: 960px) {
+  .genomeDetailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .genomeGalleryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- The Lab --- */
+.labFeatureSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.8rem 4rem;
+  text-align: center;
+}
+
+.labSectionTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  font-weight: 500;
+  margin: 0.5rem 0 0.45rem;
+  color: #fff;
+}
+
+.labFeatureSubtitle {
+  margin: 0 auto 1.5rem;
+  color: #9a928a;
+  font-size: 0.95rem;
+  max-width: 36rem;
+}
+
+.labFeatureLayout {
+  display: grid;
+  grid-template-columns: 3px 1fr;
+  gap: 1.25rem;
+  text-align: left;
+  margin-bottom: 2rem;
+  max-width: 52rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.labFeatureAccent {
+  background: linear-gradient(180deg, #a67c52, rgba(166, 124, 82, 0.12));
+  border-radius: 2px;
+  min-height: 6rem;
+}
+
+.labFeatureBody {
+  margin: 0;
+  color: #c4bbb2;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.labFeatureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.labFeatureCard {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: #0c0c0c;
+  padding: 1.15rem 1.1rem;
+  text-align: left;
+}
+
+.labFeatureCardIcon {
+  color: #a67c52;
+  margin-bottom: 0.55rem;
+}
+
+.labGridIconSvg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+
+.labFeatureCard h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #e8dfd7;
+}
+
+.labFeatureCard p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #9a928a;
+}
+
+/* --- Archives (research / field notes) --- */
+.archivesResearchSection {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 3.5rem 1.8rem 4.5rem;
+  background: #000;
+  color: #fafafa;
+}
+
+.archivesResearchHeader {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.archivesBookIconWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.archivesBookIcon {
+  width: 52px;
+  height: 52px;
+  color: #c28e5e;
+}
+
+.archivesResearchPhase {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c28e5e;
+}
+
+.archivesResearchTitle {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.1rem, 4.5vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.archivesResearchIntro {
+  margin: 0 auto;
+  max-width: 42rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #a1a1aa;
+}
+
+.archivesPhilosophy {
+  margin-bottom: 2rem;
+}
+
+.archivesPhilosophyInner {
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid #c28e5e;
+  border-radius: 0 8px 8px 0;
+  padding: 1.35rem 1.4rem 1.4rem 1.5rem;
+  background: linear-gradient(90deg, rgba(194, 142, 94, 0.06), transparent 55%), #0a0a0a;
+}
+
+.archivesPhilosophyHead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+
+.archivesPhilosophyDocIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #c28e5e;
+}
+
+.archivesPhilosophyTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #c28e5e;
+}
+
+.archivesPhilosophyPara {
+  margin: 0 0 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: #a1a1aa;
+}
+
+.archivesPhilosophyPara:last-child {
+  margin-bottom: 0;
+}
+
+.archivesFilterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.archivesFilterBtn {
+  appearance: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.archivesFilterBtn:hover {
+  border-color: rgba(194, 142, 94, 0.5);
+  color: #fff;
+}
+
+.archivesFilterBtn--active {
+  background: #c28e5e;
+  border-color: #c28e5e;
+  color: #0a0a0a;
+}
+
+.archivesArticleList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.archivesArticleCard {
+  display: flex;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s;
+}
+
+.archivesArticleCard:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.archivesArticleCard:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.archivesArticleMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.archivesArticleTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.archivesCategoryTag {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(194, 142, 94, 0.55);
+  border-radius: 3px;
+  color: #c28e5e;
+}
+
+.archivesArticleMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   align-items: center;
 }
 
-.vaultMeta span {
-  color: #918571;
-  letter-spacing: 0.24em;
-  font-size: 0.48rem;
+.archivesMetaLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  color: #71717a;
 }
 
-.vaultMeta em {
-  color: #747b87;
-  background: rgba(94, 102, 116, 0.15);
-  border: 1px solid rgba(109, 117, 130, 0.22);
-  font-style: normal;
-  font-size: 0.44rem;
-  letter-spacing: 0.2em;
-  padding: 0.16rem 0.4rem;
+.archivesMetaIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 
-.vaultBody button {
-  width: 100%;
-  margin-top: 1rem;
-  min-height: 42px;
-  background: rgba(7, 9, 13, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #f3f0ec;
-  letter-spacing: 0.24em;
-  font-size: 0.52rem;
-  cursor: pointer;
+.archivesArticleTitle {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.archivesArticleSummary {
+  margin: 0 0 1rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: #a1a1aa;
+}
+
+.archivesArticleBottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.archivesAuthors {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #a1a1aa;
+}
+
+.archivesAuthorsIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.archivesReadTime {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #71717a;
+}
+
+.archivesArticleChevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  color: #c28e5e;
+  opacity: 0.85;
+}
+
+@media (max-width: 960px) {
+  .labFeatureGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .archivesArticleTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .archivesArticleMeta {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .archivesFilterBar {
+    justify-content: flex-start;
+  }
+
+  .archivesArticleCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .archivesArticleChevron {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+  .vaultGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .vaultCardFooter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vaultAddToCartBtn {
+    max-width: none;
+  }
 }
 
 .siteFooter {
@@ -2207,6 +3610,12 @@ input:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .coffeeLabBrandMark__pulseDot {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
   .topbar,
   .heroContent,
   .kicker,
@@ -2266,20 +3675,14 @@ input:focus-visible {
 
   .logoWrap {
     justify-self: center;
+    margin-right: 0;
+    padding-right: clamp(0.5rem, 2vw, 1rem);
   }
 
-  .logoWrap,
   .navIcons {
     border: 0;
     margin: 0;
     padding: 0;
-  }
-
-  .logoWrap::after {
-    left: 30px;
-    top: 11px;
-    width: 7px;
-    height: 7px;
   }
 
   .nav {
@@ -2371,10 +3774,6 @@ input:focus-visible {
   }
 
   .manualAssemblyPanel {
-    grid-template-columns: 1fr;
-  }
-
-  .vaultGrid {
     grid-template-columns: 1fr;
   }
 

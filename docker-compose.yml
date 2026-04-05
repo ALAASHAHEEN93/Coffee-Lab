@@ -1,0 +1,13 @@
+# Local MongoDB — no Atlas IP whitelist needed for dev.
+# Run: docker compose up -d
+# Then set DATABASE_URL=mongodb://127.0.0.1:27017/coffee-beans in .env
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

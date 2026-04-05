@@ -86,23 +86,23 @@ async function main() {
 
   const geneticImgId = await uploadMedia(
     payload,
-    'public/images/section-two-product.png',
-    'Genetische Sourcing-Sektion',
-    'Genetic sourcing section',
+    'public/images/phase-01-packaging.png',
+    'PHASE_01 — Verpackung & Feldnotizen',
+    'PHASE_01 — packaging & field notes',
   )
 
   const thermalImgId = await uploadMedia(
     payload,
-    'public/images/section-three-roaster.png',
-    'Thermische Präzision',
-    'Thermal precision',
+    'public/images/phase-02-roaster.png',
+    'PHASE_02 — Röstanlage',
+    'PHASE_02 — roasting line',
   )
 
   const valueImgId = await uploadMedia(
     payload,
-    'public/images/section-four-final.png',
-    'Transparenz-Sektion',
-    'Transparency section',
+    'public/images/phase-03-retail.png',
+    'PHASE_03 — Handel & Transparenz',
+    'PHASE_03 — retail & transparency',
   )
 
   const productMediaIds: (string | undefined)[] = []
@@ -212,6 +212,10 @@ async function main() {
     manualRowsEspresso: stitchIds(saved.manualRowsEspresso, HOME_DEFAULTS.manualRowsEspresso),
     manualRowsFilter: stitchIds(saved.manualRowsFilter, HOME_DEFAULTS.manualRowsFilter),
     vaultCards: stitchIds(saved.vaultCards, HOME_DEFAULTS.vaultCards),
+    genomeMetrics: stitchIds(saved.genomeMetrics, HOME_DEFAULTS.genomeMetrics),
+    labGridCards: stitchIds(saved.labGridCards, HOME_DEFAULTS.labGridCards),
+    archivesFilterTabs: stitchIds(saved.archivesFilterTabs, HOME_DEFAULTS.archivesFilterTabs),
+    archivesListRows: stitchIds(saved.archivesListRows, HOME_DEFAULTS.archivesListRows),
     footerMapLinks: stitchIds(saved.footerMapLinks, HOME_DEFAULTS.footerMapLinks),
     footerOpsLinks: stitchIds(saved.footerOpsLinks, HOME_DEFAULTS.footerOpsLinks),
     ...(enStoreProducts?.length ? { storeProducts: enStoreProducts } : {}),

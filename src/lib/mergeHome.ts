@@ -1,7 +1,44 @@
 import type { Home } from '@/payload-types'
 import { HOME_DEFAULTS } from './homeDefaults'
+import { HOME_SEED_DE } from './homeSeedDe'
 
 const SHOP_HREF = '#roastery'
+
+/** Deep-merge plain objects; arrays from `override` replace entirely. */
+function deepMerge<T extends Record<string, unknown>>(base: T, override: Partial<T>): T {
+  const out = { ...base } as T
+  for (const key of Object.keys(override || {}) as (keyof T)[]) {
+    const bv = override[key]
+    if (bv === undefined) continue
+    const av = base[key]
+    if (Array.isArray(bv)) {
+      ;(out as Record<string, unknown>)[key as string] = bv
+    } else if (
+      bv !== null &&
+      typeof bv === 'object' &&
+      !Array.isArray(bv) &&
+      av !== null &&
+      typeof av === 'object' &&
+      !Array.isArray(av)
+    ) {
+      ;(out as Record<string, unknown>)[key as string] = deepMerge(
+        av as Record<string, unknown>,
+        bv as Record<string, unknown>,
+      )
+    } else {
+      ;(out as Record<string, unknown>)[key as string] = bv
+    }
+  }
+  return out
+}
+
+function localeDefaults(locale: 'de' | 'en'): typeof HOME_DEFAULTS {
+  if (locale !== 'de') return HOME_DEFAULTS
+  return deepMerge(
+    HOME_DEFAULTS as unknown as Record<string, unknown>,
+    HOME_SEED_DE as unknown as Record<string, unknown>,
+  ) as unknown as typeof HOME_DEFAULTS
+}
 
 function mergeNavItems(
   cms: Home['navItems'] | null | undefined,
@@ -23,10 +60,12 @@ function mergeNavItems(
 }
 
 /**
- * Shallow-deep merge of CMS home global with English defaults so every field resolves.
+ * Shallow-deep merge of CMS home global with defaults. For `locale: 'de'`, German
+ * fallbacks (`HOME_SEED_DE`) apply when CMS fields are missing — so the DE toggle
+ * actually changes copy when the DB is empty or partial.
  */
-export function mergeHome(h: Home | null): Home {
-  const d = HOME_DEFAULTS
+export function mergeHome(h: Home | null, locale: 'de' | 'en' = 'en'): Home {
+  const d = localeDefaults(locale)
   const x = h ?? ({} as Home)
 
   return {
@@ -105,7 +144,56 @@ export function mergeHome(h: Home | null): Home {
     vaultSpecimenYear: x.vaultSpecimenYear ?? d.vaultSpecimenYear,
     vaultMetadataLabel: x.vaultMetadataLabel ?? d.vaultMetadataLabel,
     vaultMetadataValue: x.vaultMetadataValue ?? d.vaultMetadataValue,
+    vaultPriceLabel: x.vaultPriceLabel ?? d.vaultPriceLabel,
     vaultCards: x.vaultCards?.length ? x.vaultCards : d.vaultCards,
+    genomePhase: x.genomePhase ?? d.genomePhase,
+    genomeTitle: x.genomeTitle ?? d.genomeTitle,
+    genomeIntro: x.genomeIntro ?? d.genomeIntro,
+    genomeTabGallery: x.genomeTabGallery ?? d.genomeTabGallery,
+    genomeTabDetailed: x.genomeTabDetailed ?? d.genomeTabDetailed,
+    genomeBackLabel: x.genomeBackLabel ?? d.genomeBackLabel,
+    genomeBackHref: x.genomeBackHref ?? d.genomeBackHref,
+    genomeGalleryIntro: x.genomeGalleryIntro ?? d.genomeGalleryIntro,
+    genomeGalleryCta: x.genomeGalleryCta ?? d.genomeGalleryCta,
+    genomeMutationLabel: x.genomeMutationLabel ?? d.genomeMutationLabel,
+    genomeExtractionGradeLabel: x.genomeExtractionGradeLabel ?? d.genomeExtractionGradeLabel,
+    genomeExtractionGradeValue: x.genomeExtractionGradeValue ?? d.genomeExtractionGradeValue,
+    genomeSpecimenTitle: x.genomeSpecimenTitle ?? d.genomeSpecimenTitle,
+    genomeSpecimenCode: x.genomeSpecimenCode ?? d.genomeSpecimenCode,
+    genomeSpecimenStatus: x.genomeSpecimenStatus ?? d.genomeSpecimenStatus,
+    genomeGeneticSequenceLabel: x.genomeGeneticSequenceLabel ?? d.genomeGeneticSequenceLabel,
+    genomeGeneticSequenceText: x.genomeGeneticSequenceText ?? d.genomeGeneticSequenceText,
+    genomeSensoryLabel: x.genomeSensoryLabel ?? d.genomeSensoryLabel,
+    genomeSensoryQuote: x.genomeSensoryQuote ?? d.genomeSensoryQuote,
+    genomeMetrics: x.genomeMetrics?.length ? x.genomeMetrics : d.genomeMetrics,
+    genomeStabilityLabel: x.genomeStabilityLabel ?? d.genomeStabilityLabel,
+    genomeStabilityPercent: x.genomeStabilityPercent ?? d.genomeStabilityPercent,
+    genomeStabilityStatus: x.genomeStabilityStatus ?? d.genomeStabilityStatus,
+    genomeStabilityBar: x.genomeStabilityBar ?? d.genomeStabilityBar,
+    genomeRoastProfileLabel: x.genomeRoastProfileLabel ?? d.genomeRoastProfileLabel,
+    genomeRoastProfileValue: x.genomeRoastProfileValue ?? d.genomeRoastProfileValue,
+    genomeMethodologyLabel: x.genomeMethodologyLabel ?? d.genomeMethodologyLabel,
+    genomeMethodologyValue: x.genomeMethodologyValue ?? d.genomeMethodologyValue,
+    genomeComplexityLabel: x.genomeComplexityLabel ?? d.genomeComplexityLabel,
+    genomeComplexityValue: x.genomeComplexityValue ?? d.genomeComplexityValue,
+    genomeSpecimenCostLabel: x.genomeSpecimenCostLabel ?? d.genomeSpecimenCostLabel,
+    genomePriceDisplay: x.genomePriceDisplay ?? d.genomePriceDisplay,
+    genomePerUnit: x.genomePerUnit ?? d.genomePerUnit,
+    genomeAddToCartLabel: x.genomeAddToCartLabel ?? d.genomeAddToCartLabel,
+    genomeLabNotesLabel: x.genomeLabNotesLabel ?? d.genomeLabNotesLabel,
+    genomeLabNotes: x.genomeLabNotes ?? d.genomeLabNotes,
+    labPhase: x.labPhase ?? d.labPhase,
+    labTitle: x.labTitle ?? d.labTitle,
+    labSubtitle: x.labSubtitle ?? d.labSubtitle,
+    labBody: x.labBody ?? d.labBody,
+    labGridCards: x.labGridCards?.length ? x.labGridCards : d.labGridCards,
+    archivesListPhase: x.archivesListPhase ?? d.archivesListPhase,
+    archivesListTitle: x.archivesListTitle ?? d.archivesListTitle,
+    archivesListIntro: x.archivesListIntro ?? d.archivesListIntro,
+    archivesPhilosophyTitle: x.archivesPhilosophyTitle ?? d.archivesPhilosophyTitle,
+    archivesPhilosophyBody: x.archivesPhilosophyBody ?? d.archivesPhilosophyBody,
+    archivesFilterTabs: x.archivesFilterTabs?.length ? x.archivesFilterTabs : d.archivesFilterTabs,
+    archivesListRows: x.archivesListRows?.length ? x.archivesListRows : d.archivesListRows,
     footerTagline: x.footerTagline ?? d.footerTagline,
     footerMission: x.footerMission ?? d.footerMission,
     footerMapTitle: x.footerMapTitle ?? d.footerMapTitle,

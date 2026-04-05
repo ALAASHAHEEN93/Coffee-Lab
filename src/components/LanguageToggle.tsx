@@ -1,15 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import React from 'react'
-
-const LANG_COOKIE = 'payload-lng'
 
 type Locale = 'de' | 'en'
 
 /**
- * Sets Payload’s locale cookie (`payload-lng`) and refreshes the RSC tree so the home global loads in DE or EN.
- * `inline` matches primary nav link styling (bold caps); `segmented` is the bordered control.
+ * Sets `payload-lng` via **`/api/locale`** (Set-Cookie + redirect). Works with Payload’s API layout.
  */
 export function LanguageToggle({
   locale,
@@ -18,12 +14,14 @@ export function LanguageToggle({
   locale: Locale
   variant?: 'segmented' | 'inline'
 }) {
-  const router = useRouter()
-
   const setLocale = (next: Locale) => {
     if (next === locale) return
-    document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; SameSite=Lax`
-    router.refresh()
+    if (typeof window === 'undefined') return
+    const back =
+      window.location.pathname + window.location.search + (window.location.hash || '')
+    window.location.assign(
+      `/api/locale?locale=${next}&next=${encodeURIComponent(back)}`,
+    )
   }
 
   if (variant === 'inline') {

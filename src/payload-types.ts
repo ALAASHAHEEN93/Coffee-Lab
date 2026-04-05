@@ -129,6 +129,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  roles?: ('admin' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -286,6 +287,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -639,14 +641,206 @@ export interface Home {
    */
   vaultSpecimenYear?: string | null;
   vaultMetadataLabel?: string | null;
+  /**
+   * Default pill text when a card has no Metadata pill set.
+   */
   vaultMetadataValue?: string | null;
+  /**
+   * e.g. SPECIMEN_COST (shown above price).
+   */
+  vaultPriceLabel?: string | null;
   vaultCards?:
     | {
         score?: string | null;
         title?: string | null;
         label?: string | null;
         description?: string | null;
+        /**
+         * e.g. Ethiopia Guji — shown as Origin.
+         */
+        originLine?: string | null;
+        /**
+         * e.g. Light-medium — shown as Roast level.
+         */
+        roastLine?: string | null;
+        /**
+         * e.g. Jasmine, stone fruit — shown as Flavor profile.
+         */
+        flavorLine?: string | null;
+        /**
+         * Status text inside the dark pill (e.g. DECRYPTING_BIO_SIGNATURE).
+         */
+        metadataPill?: string | null;
+        /**
+         * e.g. $32.00
+         */
+        price?: string | null;
+        /**
+         * Button label (e.g. ADD TO CART).
+         */
+        addToCartLabel?: string | null;
+        /**
+         * Legacy: combined CTA. Prefer price + addToCartLabel.
+         */
         priceButton?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Eyebrow (e.g. GENETIC ENGINEERING).
+   */
+  genomePhase?: string | null;
+  /**
+   * Main heading (e.g. The Blending Genome).
+   */
+  genomeTitle?: string | null;
+  /**
+   * Intro paragraph under the title.
+   */
+  genomeIntro?: string | null;
+  /**
+   * Gallery tab label (e.g. GALLERY VIEW).
+   */
+  genomeTabGallery?: string | null;
+  /**
+   * Detailed tab label (e.g. DETAILED ANALYSIS).
+   */
+  genomeTabDetailed?: string | null;
+  /**
+   * Link shown in detailed view (e.g. BACK TO GALLERY).
+   */
+  genomeBackLabel?: string | null;
+  /**
+   * Optional fallback href (e.g. #vault). Used if gallery mode is off.
+   */
+  genomeBackHref?: string | null;
+  /**
+   * Short copy shown in gallery view only.
+   */
+  genomeGalleryIntro?: string | null;
+  /**
+   * Button on gallery tiles (e.g. OPEN ANALYSIS).
+   */
+  genomeGalleryCta?: string | null;
+  genomeMutationLabel?: string | null;
+  genomeExtractionGradeLabel?: string | null;
+  genomeExtractionGradeValue?: string | null;
+  genomeSpecimenTitle?: string | null;
+  genomeSpecimenCode?: string | null;
+  /**
+   * Status pill (e.g. STABLE).
+   */
+  genomeSpecimenStatus?: string | null;
+  genomeGeneticSequenceLabel?: string | null;
+  genomeGeneticSequenceText?: string | null;
+  genomeSensoryLabel?: string | null;
+  genomeSensoryQuote?: string | null;
+  genomeMetrics?:
+    | {
+        label: string;
+        /**
+         * 0–100 percent fill.
+         */
+        value: number;
+        id?: string | null;
+      }[]
+    | null;
+  genomeStabilityLabel?: string | null;
+  /**
+   * Large display, e.g. 96%
+   */
+  genomeStabilityPercent?: string | null;
+  /**
+   * Status badge (e.g. OPTIMAL).
+   */
+  genomeStabilityStatus?: string | null;
+  /**
+   * Optional bar fill under stability index (0–100).
+   */
+  genomeStabilityBar?: number | null;
+  genomeRoastProfileLabel?: string | null;
+  genomeRoastProfileValue?: string | null;
+  genomeMethodologyLabel?: string | null;
+  genomeMethodologyValue?: string | null;
+  genomeComplexityLabel?: string | null;
+  genomeComplexityValue?: string | null;
+  genomeSpecimenCostLabel?: string | null;
+  genomePriceDisplay?: string | null;
+  /**
+   * e.g. per 12oz
+   */
+  genomePerUnit?: string | null;
+  genomeAddToCartLabel?: string | null;
+  genomeLabNotesLabel?: string | null;
+  genomeLabNotes?: string | null;
+  labPhase?: string | null;
+  labTitle?: string | null;
+  labSubtitle?: string | null;
+  labBody?: string | null;
+  labGridCards?:
+    | {
+        title?: string | null;
+        description?: string | null;
+        icon?: ('flask' | 'bean' | 'chart' | 'atom') | null;
+        id?: string | null;
+      }[]
+    | null;
+  archivesListPhase?: string | null;
+  archivesListTitle?: string | null;
+  archivesListIntro?: string | null;
+  /**
+   * Callout heading (e.g. Open Science Philosophy).
+   */
+  archivesPhilosophyTitle?: string | null;
+  /**
+   * Callout body — use a blank line between paragraphs.
+   */
+  archivesPhilosophyBody?: string | null;
+  /**
+   * First tab should use id `all`. Other ids must match row filterKey.
+   */
+  archivesFilterTabs?:
+    | {
+        /**
+         * e.g. all, science, economics
+         */
+        id: string;
+        label: string;
+      }[]
+    | null;
+  archivesListRows?:
+    | {
+        title?: string | null;
+        /**
+         * Must match a filter tab id (not `all`), e.g. economics. Same in all locales.
+         */
+        filterKey?: string | null;
+        /**
+         * Badge text (e.g. ECONOMICS).
+         */
+        category?: string | null;
+        /**
+         * Human-readable date line.
+         */
+        dateDisplay?: string | null;
+        /**
+         * e.g. 42 PGS
+         */
+        pagesLabel?: string | null;
+        summary?: string | null;
+        authors?: string | null;
+        /**
+         * Minutes read (shown as “N MIN READ”).
+         */
+        readMinutes?: number | null;
+        /**
+         * Legacy log code (optional).
+         */
+        date?: string | null;
+        /**
+         * Link target (use # for placeholder).
+         */
+        href?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -877,6 +1071,7 @@ export interface HomeSelect<T extends boolean = true> {
   vaultSpecimenYear?: T;
   vaultMetadataLabel?: T;
   vaultMetadataValue?: T;
+  vaultPriceLabel?: T;
   vaultCards?:
     | T
     | {
@@ -884,7 +1079,93 @@ export interface HomeSelect<T extends boolean = true> {
         title?: T;
         label?: T;
         description?: T;
+        originLine?: T;
+        roastLine?: T;
+        flavorLine?: T;
+        metadataPill?: T;
+        price?: T;
+        addToCartLabel?: T;
         priceButton?: T;
+        id?: T;
+      };
+  genomePhase?: T;
+  genomeTitle?: T;
+  genomeIntro?: T;
+  genomeTabGallery?: T;
+  genomeTabDetailed?: T;
+  genomeBackLabel?: T;
+  genomeBackHref?: T;
+  genomeGalleryIntro?: T;
+  genomeGalleryCta?: T;
+  genomeMutationLabel?: T;
+  genomeExtractionGradeLabel?: T;
+  genomeExtractionGradeValue?: T;
+  genomeSpecimenTitle?: T;
+  genomeSpecimenCode?: T;
+  genomeSpecimenStatus?: T;
+  genomeGeneticSequenceLabel?: T;
+  genomeGeneticSequenceText?: T;
+  genomeSensoryLabel?: T;
+  genomeSensoryQuote?: T;
+  genomeMetrics?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  genomeStabilityLabel?: T;
+  genomeStabilityPercent?: T;
+  genomeStabilityStatus?: T;
+  genomeStabilityBar?: T;
+  genomeRoastProfileLabel?: T;
+  genomeRoastProfileValue?: T;
+  genomeMethodologyLabel?: T;
+  genomeMethodologyValue?: T;
+  genomeComplexityLabel?: T;
+  genomeComplexityValue?: T;
+  genomeSpecimenCostLabel?: T;
+  genomePriceDisplay?: T;
+  genomePerUnit?: T;
+  genomeAddToCartLabel?: T;
+  genomeLabNotesLabel?: T;
+  genomeLabNotes?: T;
+  labPhase?: T;
+  labTitle?: T;
+  labSubtitle?: T;
+  labBody?: T;
+  labGridCards?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  archivesListPhase?: T;
+  archivesListTitle?: T;
+  archivesListIntro?: T;
+  archivesPhilosophyTitle?: T;
+  archivesPhilosophyBody?: T;
+  archivesFilterTabs?:
+    | T
+    | {
+        id?: T;
+        label?: T;
+      };
+  archivesListRows?:
+    | T
+    | {
+        title?: T;
+        filterKey?: T;
+        category?: T;
+        dateDisplay?: T;
+        pagesLabel?: T;
+        summary?: T;
+        authors?: T;
+        readMinutes?: T;
+        date?: T;
+        href?: T;
         id?: T;
       };
   footerTagline?: T;

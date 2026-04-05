@@ -1,3 +1,4 @@
+import type { Home } from '@/payload-types'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getRequestLocale } from '@/lib/getLocale'
@@ -7,8 +8,17 @@ import HomePageClient from './HomePageClient'
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const payload = await getPayload({ config })
   const locale = await getRequestLocale()
-  const home = await payload.findGlobal({ slug: 'home', locale, depth: 2 })
+  let home: Home | null = null
+  try {
+    const payload = await getPayload({ config })
+    home = (await payload.findGlobal({ slug: 'home', locale, depth: 2 })) as Home | null
+  } catch (err) {
+    console.warn(
+      '[home] MongoDB / Payload unavailable — using built-in defaults. If this is unexpected, check Atlas Network Access (IP allowlist) and DATABASE_URL:',
+      'https://www.mongodb.com/docs/atlas/security/add-ip-address/',
+      err,
+    )
+  }
   return <HomePageClient home={home} locale={locale} />
 }
