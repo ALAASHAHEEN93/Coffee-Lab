@@ -3,7 +3,7 @@ import { AuthShell } from '../auth/AuthShell'
 import { SignupForm } from '../auth/SignupForm'
 
 export const metadata = {
-  title: 'Create account · CoffeeLab',
+  title: 'Create account',
   description: 'Join CoffeeLab Molecular Roastery.',
 }
 

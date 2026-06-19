@@ -7,6 +7,10 @@ import HomePageClient from './HomePageClient'
 /** Payload + locale need runtime env (PAYLOAD_SECRET, DB). Skip static prerender so CI/Vercel builds without those at build time. */
 export const dynamic = 'force-dynamic'
 
+export const metadata = {
+  title: 'Molecular Roastery',
+}
+
 export default async function Page() {
   const locale = await getRequestLocale()
   let home: Home | null = null

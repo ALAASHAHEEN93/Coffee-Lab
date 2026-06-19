@@ -3,7 +3,7 @@ import { AccountClient } from '../auth/AccountClient'
 import { AuthShell } from '../auth/AuthShell'
 
 export const metadata = {
-  title: 'Your account · CoffeeLab',
+  title: 'Your account',
   description: 'CoffeeLab account and session.',
 }
 

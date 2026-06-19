@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none" role="img" aria-label="CoffeeLab">
+  <rect width="180" height="180" rx="40" fill="#0B0A09"/>
+  <path
+    d="M62 36h56v30l26 52c3.6 7.2-2 14.6-9.8 14.6H45.8c-7.8 0-13.4-7.4-9.8-14.6L62 66V36z"
+    stroke="#C2916B"
+    stroke-width="10"
+    stroke-linejoin="round"
+  />
+  <path d="M53 112h74" stroke="#C2916B" stroke-width="8" stroke-linecap="round"/>
+</svg>

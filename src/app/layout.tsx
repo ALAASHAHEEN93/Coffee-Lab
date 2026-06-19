@@ -2,7 +2,6 @@ import React from 'react'
 
 export const metadata = {
   description: 'CoffeeLab — Molecular Roastery',
-  title: 'CoffeeLab',
 }
 
 /**
