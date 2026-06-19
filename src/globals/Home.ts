@@ -1173,13 +1173,83 @@ export const Home: GlobalConfig = {
           ],
         },
         {
+          label: 'Operations',
+          fields: [
+            {
+              name: 'operationsPhase',
+              type: 'text',
+              localized: true,
+              admin: { description: 'Eyebrow above the operations title (e.g. PHASE_06 // OPS).' },
+            },
+            {
+              name: 'operationsTitle',
+              type: 'text',
+              localized: true,
+            },
+            {
+              name: 'operationsIntro',
+              type: 'textarea',
+              localized: true,
+            },
+            {
+              name: 'operationsPanels',
+              type: 'array',
+              labels: { singular: 'Panel', plural: 'Operations panels' },
+              maxRows: 4,
+              admin: {
+                description:
+                  'LOGISTICS, EXCHANGES, COLLECTIVE, TERMINAL — anchor must match footer href (logistics, exchange, collective, terminal).',
+              },
+              fields: [
+                {
+                  name: 'anchor',
+                  type: 'select',
+                  required: true,
+                  options: [
+                    { label: 'Logistics (#logistics)', value: 'logistics' },
+                    { label: 'Exchanges (#exchange)', value: 'exchange' },
+                    { label: 'Collective (#collective)', value: 'collective' },
+                    { label: 'Terminal (#terminal)', value: 'terminal' },
+                  ],
+                },
+                { name: 'label', type: 'text', required: true, localized: true },
+                { name: 'status', type: 'text', localized: true, admin: { description: 'e.g. NOMINAL, OPEN, ONLINE' } },
+                { name: 'title', type: 'text', required: true, localized: true },
+                { name: 'body', type: 'textarea', localized: true },
+                {
+                  name: 'metrics',
+                  type: 'array',
+                  labels: { singular: 'Metric', plural: 'Metrics' },
+                  maxRows: 6,
+                  fields: [
+                    { name: 'key', type: 'text', required: true, localized: true },
+                    { name: 'value', type: 'text', required: true, localized: true },
+                  ],
+                },
+                {
+                  name: 'feed',
+                  type: 'array',
+                  labels: { singular: 'Log line', plural: 'Activity feed' },
+                  maxRows: 8,
+                  fields: [
+                    { name: 'code', type: 'text', localized: true, admin: { description: 'e.g. LOG-4102' } },
+                    { name: 'message', type: 'text', required: true, localized: true },
+                  ],
+                },
+                { name: 'ctaLabel', type: 'text', localized: true },
+                { name: 'ctaHref', type: 'text', admin: { description: 'Optional CTA link.' } },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Footer',
           fields: [
             {
               name: 'footerTagline',
               type: 'text',
               localized: true,
-              admin: { description: 'Line under logo (e.g. MOLECULAR ROASTERY // STATION).' },
+              admin: { description: 'Line under logo (e.g. MOLECULAR ROASTERY // KÖLN).' },
             },
             {
               name: 'footerMission',

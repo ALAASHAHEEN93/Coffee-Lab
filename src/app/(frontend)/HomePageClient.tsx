@@ -6,9 +6,13 @@ import type { Home } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { mergeHome } from '@/lib/mergeHome'
 import { LABORATORY_FALLBACK_PRODUCTS } from '@/lib/laboratoryFallbackProducts'
+import { imageForGeneticBase, specimenCartKey } from '@/lib/cartHelpers'
 import PrecisionLab from './PrecisionLab'
 import { CoffeeLabLogo } from './CoffeeLabLogo'
 import { LaboratoryStore } from './LaboratoryStore'
+import { OperationsHub } from './OperationsHub'
+import { CartProvider, useCart } from './CartContext'
+import { CartDrawer } from './CartDrawer'
 import { LanguageToggle } from '@/components/LanguageToggle'
 import './styles.css'
 
@@ -155,6 +159,21 @@ export default function HomePageClient({
   home: Home | null
   locale: 'de' | 'en'
 }) {
+  return (
+    <CartProvider>
+      <HomePageClientInner home={home} locale={locale} />
+    </CartProvider>
+  )
+}
+
+function HomePageClientInner({
+  home,
+  locale,
+}: {
+  home: Home | null
+  locale: 'de' | 'en'
+}) {
+  const { count, openCart, addItem } = useCart()
   const cms = useMemo(() => mergeHome(home, locale), [home, locale])
   const [brewMode, setBrewMode] = useState<'espresso' | 'filter'>('filter')
   const [assemblyMode, setAssemblyMode] = useState<'expert' | 'manual'>('expert')
@@ -248,6 +267,33 @@ export default function HomePageClient({
     }))
   }, [cms.storeProducts])
 
+  function addBlendCardToCart(card: NonNullable<Home['blendingExpertCards']>[number]) {
+    addItem({
+      key: specimenCartKey('blend', card.id, card.title),
+      title: card.title ?? 'Blend',
+      price: card.price ?? '$0.00',
+      image: imageForGeneticBase(card.geneticBase, laboratoryProducts),
+    })
+  }
+
+  function addVaultCardToCart(item: NonNullable<Home['vaultCards']>[number]) {
+    addItem({
+      key: specimenCartKey('vault', item.id, item.title),
+      title: item.title ?? 'Vault specimen',
+      price: vaultPriceDisplay(item),
+      image: imageForGeneticBase(item.originLine, laboratoryProducts),
+    })
+  }
+
+  function addGenomeSpecimenToCart() {
+    addItem({
+      key: 'genome-specimen',
+      title: cms.genomeSpecimenTitle ?? 'Genome specimen',
+      price: cms.genomePriceDisplay ?? '$0.00',
+      image: imageForGeneticBase(cms.genomeSpecimenTitle, laboratoryProducts),
+    })
+  }
+
   const heroBg =
     cms.heroBackground && typeof cms.heroBackground === 'object' && 'url' in cms.heroBackground && cms.heroBackground.url
       ? cms.heroBackground
@@ -299,13 +345,18 @@ export default function HomePageClient({
                   <path d="M5.6 18.2c1.7-2.7 4.1-4.1 6.4-4.1s4.7 1.4 6.4 4.1" />
                 </svg>
               </a>
-              <a className="iconButton cartButton" href="#cart" aria-label={cms.cartAriaLabel ?? 'Cart'}>
+              <button
+                type="button"
+                className="iconButton cartButton"
+                onClick={openCart}
+                aria-label={cms.cartAriaLabel ?? 'Cart'}
+              >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M6.2 7.5h11l-1.4 7.2H8z" />
                   <path d="M8.6 7.5 9.8 5h3.5l1.2 2.5" />
                 </svg>
-                <span className="cartCount">0</span>
-              </a>
+                <span className="cartCount">{count}</span>
+              </button>
             </div>
             <LanguageToggle locale={locale} variant="inline" />
           </div>
@@ -352,6 +403,8 @@ export default function HomePageClient({
         emptyMessage={cms.laboratoryEmptyFilter ?? ''}
         priceLabel={cms.laboratoryPriceLabel ?? ''}
         addToCartAriaTemplate={cms.laboratoryAddToCartAriaTemplate ?? ''}
+        addToCartLabel="ADD TO CART"
+        closeLabel="Close"
         filters={cms.storeFilters ?? []}
         products={laboratoryProducts}
         stats={cms.labStats ?? []}
@@ -567,6 +620,7 @@ export default function HomePageClient({
                     type="button"
                     className="blendCardCartBtn"
                     aria-label={`${card.cta}: ${card.title}`}
+                    onClick={() => addBlendCardToCart(card)}
                   >
                     <svg className="blendCardCartIcon" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M6.2 7.5h11l-1.4 7.2H8z" />
@@ -713,7 +767,12 @@ export default function HomePageClient({
                     <span className="vaultPriceKey">{cms.vaultPriceLabel ?? 'SPECIMEN_COST'}</span>
                     <strong className="vaultPriceAmount">{vaultPriceDisplay(item)}</strong>
                   </div>
-                  <button type="button" className="vaultAddToCartBtn" aria-label={`${cta}: ${item.title ?? ''}`}>
+                  <button
+                    type="button"
+                    className="vaultAddToCartBtn"
+                    aria-label={`${cta}: ${item.title ?? ''}`}
+                    onClick={() => addVaultCardToCart(item)}
+                  >
                     <svg className="vaultCartIcon" viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M6.2 7.5h11l-1.4 7.2H8z" />
                       <path d="M8.6 7.5 9.8 5h3.5l1.2 2.5" />
@@ -890,7 +949,7 @@ export default function HomePageClient({
                   </div>
                 </div>
 
-                <button type="button" className="genomeAddToCartBtn">
+                <button type="button" className="genomeAddToCartBtn" onClick={addGenomeSpecimenToCart}>
                   <svg className="genomeCartIcon" viewBox="0 0 24 24" aria-hidden>
                     <path d="M6.2 7.5h11l-1.4 7.2H8z" fill="none" stroke="currentColor" strokeWidth="1.3" />
                     <path d="M8.6 7.5 9.8 5h3.5l1.2 2.5" fill="none" stroke="currentColor" strokeWidth="1.3" />
@@ -1097,6 +1156,13 @@ export default function HomePageClient({
         </ul>
       </section>
 
+      <OperationsHub
+        phase={cms.operationsPhase}
+        title={cms.operationsTitle}
+        intro={cms.operationsIntro}
+        panels={cms.operationsPanels ?? []}
+      />
+
       <footer className="siteFooter">
         <div className="footerBrand">
           <div className="footerBrandLogo">
@@ -1160,6 +1226,8 @@ export default function HomePageClient({
           )}
         </p>
       </div>
+
+      <CartDrawer catalog={laboratoryProducts} priceLabel={cms.laboratoryPriceLabel ?? 'PRICE / 12OZ'} />
     </main>
   )
 }

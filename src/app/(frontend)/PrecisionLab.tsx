@@ -36,6 +36,35 @@ const PRESETS: Record<BrewMode, Record<AxisKey, number>> = {
   },
 }
 
+function describeAxis(value: number, high: string, low: string, mid = 'balanced expression'): string {
+  if (value >= 68) return high
+  if (value <= 38) return low
+  return mid
+}
+
+function buildFlavorSynthesis(profile: Record<AxisKey, number>, brewMode: BrewMode): string {
+  const parts = [
+    describeAxis(profile.acidity, 'citric lift', 'soft acidity', 'moderate brightness'),
+    describeAxis(profile.body, 'syrupy body', 'tea-like clarity', 'medium mouthfeel'),
+    describeAxis(profile.roast, 'cocoa roast depth', 'light roast florals', 'caramelized mid-roast'),
+    describeAxis(profile.sweetness, 'honeyed finish', 'dry finish', 'rounded sweetness'),
+    describeAxis(profile.complexity, 'layered volatile aromatics', 'clean single-note cup', 'nuanced complexity'),
+  ]
+
+  const lead =
+    brewMode === 'espresso'
+      ? 'Espresso synthesis projects'
+      : 'Filter synthesis projects'
+
+  return `${lead} ${parts.slice(0, 3).join(', ')} with ${parts[3]} and ${parts[4]}.`
+}
+
+function synthesisCode(brewMode: BrewMode): string {
+  const suffix = brewMode === 'espresso' ? 'E' : 'F'
+  const id = Math.floor(1000 + Math.random() * 9000)
+  return `SYN-${id}-${suffix}`
+}
+
 type Props = {
   brewMode: BrewMode
   cms: Home
@@ -51,10 +80,25 @@ export default function PrecisionLab({ brewMode, cms, mapScanTemplate }: Props) 
     complexity: 73,
   })
   const [draggingAxis, setDraggingAxis] = useState<number | null>(null)
+  const [synthesizing, setSynthesizing] = useState(false)
+  const [synthesis, setSynthesis] = useState<{ code: string; summary: string } | null>(null)
 
   useEffect(() => {
     setProfile(PRESETS[brewMode])
+    setSynthesis(null)
   }, [brewMode])
+
+  function handleSynthesize() {
+    setSynthesizing(true)
+    setSynthesis(null)
+    window.setTimeout(() => {
+      setSynthesis({
+        code: synthesisCode(brewMode),
+        summary: buildFlavorSynthesis(profile, brewMode),
+      })
+      setSynthesizing(false)
+    }, 520)
+  }
 
   const updateAxis = (axis: AxisKey, value: number) => {
     setProfile((prev) => ({ ...prev, [axis]: clamp(Math.round(value), 0, 100) }))
@@ -170,9 +214,20 @@ export default function PrecisionLab({ brewMode, cms, mapScanTemplate }: Props) 
                 <span key={t.id ?? t.text}>{t.text}</span>
               ))}
             </div>
-            <button type="button" className="synthesizeBtn">
-              {cms.synthesizeButton}
+            <button
+              type="button"
+              className={`synthesizeBtn ${synthesizing ? 'synthesizeBtn--pending' : ''}`}
+              onClick={handleSynthesize}
+              disabled={synthesizing}
+            >
+              {synthesizing ? 'SYNTHESIZING…' : cms.synthesizeButton}
             </button>
+            {synthesis ? (
+              <div className="synthesisResult" role="status">
+                <p className="synthesisResultCode">{synthesis.code}</p>
+                <p className="synthesisResultText">{synthesis.summary}</p>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -251,7 +306,7 @@ export default function PrecisionLab({ brewMode, cms, mapScanTemplate }: Props) 
               aria-label={cms.roastSliderLabel ?? ''}
             />
           </label>
-          <p>{cms.flavorNote}</p>
+          <p>{synthesis?.summary ?? cms.flavorNote}</p>
         </div>
       </div>
     </section>

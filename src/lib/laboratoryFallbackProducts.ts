@@ -83,3 +83,13 @@ export const LABORATORY_FALLBACK_PRODUCTS: LaboratoryProductView[] = [
     categories: ['single-origin', 'bestseller'],
   },
 ]
+
+export function resolveProductImage(
+  item: { key: string; image?: Media | string | null },
+  catalog?: LaboratoryProductView[],
+): Media | string | null | undefined {
+  if (item.image) return item.image
+  const fromCatalog = catalog?.find((p) => p.key === item.key)
+  if (fromCatalog?.image) return fromCatalog.image
+  return LABORATORY_FALLBACK_PRODUCTS.find((p) => p.key === item.key)?.image ?? null
+}

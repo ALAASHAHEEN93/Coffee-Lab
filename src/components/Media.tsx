@@ -74,7 +74,12 @@ export function Media({
     return (
       <div
         className={className}
-        style={{ background: 'rgba(120,120,120,0.12)', minHeight: 120, minWidth: 120 }}
+        style={{
+          background: 'rgba(120,120,120,0.12)',
+          ...(fill
+            ? { position: 'absolute', inset: 0, width: '100%', height: '100%' }
+            : { minHeight: 120, minWidth: 120 }),
+        }}
         aria-hidden
       />
     )

@@ -218,6 +218,11 @@ async function main() {
     archivesListRows: stitchIds(saved.archivesListRows, HOME_DEFAULTS.archivesListRows),
     footerMapLinks: stitchIds(saved.footerMapLinks, HOME_DEFAULTS.footerMapLinks),
     footerOpsLinks: stitchIds(saved.footerOpsLinks, HOME_DEFAULTS.footerOpsLinks),
+    operationsPanels: stitchIds(saved.operationsPanels, HOME_DEFAULTS.operationsPanels)?.map((panel, i) => ({
+      ...panel,
+      metrics: stitchIds(saved.operationsPanels?.[i]?.metrics, panel.metrics),
+      feed: stitchIds(saved.operationsPanels?.[i]?.feed, panel.feed),
+    })),
     ...(enStoreProducts?.length ? { storeProducts: enStoreProducts } : {}),
   }
 

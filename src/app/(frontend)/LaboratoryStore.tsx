@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import type { Home } from '@/payload-types'
 import { Media } from '@/components/Media'
 import type { LaboratoryProductView } from '@/lib/laboratoryFallbackProducts'
+import { useCart } from './CartContext'
 
 type StoreFilter =
   | 'all'
@@ -19,6 +20,8 @@ type Props = {
   emptyMessage: string
   priceLabel: string
   addToCartAriaTemplate: string
+  addToCartLabel?: string
+  closeLabel?: string
   filters: NonNullable<Home['storeFilters']>
   products: LaboratoryProductView[]
   stats: NonNullable<Home['labStats']>
@@ -106,16 +109,34 @@ export function LaboratoryStore({
   emptyMessage,
   priceLabel,
   addToCartAriaTemplate,
+  addToCartLabel = 'ADD TO CART',
+  closeLabel = 'CLOSE',
   filters,
   products,
   stats,
 }: Props) {
   const [filter, setFilter] = useState<StoreFilter>('all')
+  const [selected, setSelected] = useState<LaboratoryProductView | null>(null)
+  const { addItem } = useCart()
 
   const visible = useMemo(() => {
     if (filter === 'all') return products
     return products.filter((p) => p.categories.includes(filter))
   }, [filter, products])
+
+  function addProductToCart(p: LaboratoryProductView, e?: React.MouseEvent) {
+    e?.stopPropagation()
+    addItem({ key: p.key, title: p.title, price: p.price, image: p.image })
+  }
+
+  useEffect(() => {
+    if (!selected) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelected(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selected])
 
   return (
     <section className="laboratoryStoreSection" id="roastery" aria-labelledby="laboratory-store-heading">
@@ -143,7 +164,19 @@ export function LaboratoryStore({
           <p className="laboratoryStoreEmpty">{emptyMessage}</p>
         ) : (
           visible.map((p) => (
-            <article className="labProductCard" key={p.key}>
+            <article
+              className="labProductCard labProductCard--clickable"
+              key={p.key}
+              role="button"
+              tabIndex={0}
+              onClick={() => setSelected(p)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setSelected(p)
+                }
+              }}
+            >
               <div className="labProductImage">
                 <Media
                   resource={p.image}
@@ -176,6 +209,7 @@ export function LaboratoryStore({
                     type="button"
                     className="labCartBtn"
                     aria-label={addToCartAriaTemplate.replace('{title}', p.title)}
+                    onClick={(e) => addProductToCart(p, e)}
                   >
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M6.2 7.5h11l-1.4 7.2H8z" />
@@ -188,6 +222,67 @@ export function LaboratoryStore({
           ))
         )}
       </div>
+
+      {selected ? (
+        <div className="labProductModalBackdrop" onClick={() => setSelected(null)} role="presentation">
+          <div
+            className="labProductModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="lab-product-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="labProductModalImage">
+              <Media
+                resource={selected.image}
+                alt={`${selected.title} – product`}
+                fill
+                className="labProductImageMedia"
+                sizes="(max-width: 700px) 100vw, 420px"
+              />
+            </div>
+            <div className="labProductModalBody">
+              <button
+                type="button"
+                className="labProductModalClose"
+                onClick={() => setSelected(null)}
+                aria-label={closeLabel}
+              >
+                ×
+              </button>
+              <h3 id="lab-product-modal-title">{selected.title}</h3>
+              <p className="labProductDesc">{selected.description}</p>
+              <div className="labProductTags">
+                {selected.tags.map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+              </div>
+              <div className="labProductRating">
+                <StarRow rating={selected.rating} />
+                <span className="labRatingText">
+                  {selected.rating.toFixed(1)} ({selected.reviews} reviews)
+                </span>
+              </div>
+              <div className="labProductModalBuy">
+                <div>
+                  <small>{priceLabel}</small>
+                  <strong>{selected.price}</strong>
+                </div>
+                <button
+                  type="button"
+                  className="labProductModalCta"
+                  onClick={() => {
+                    addProductToCart(selected)
+                    setSelected(null)
+                  }}
+                >
+                  {addToCartLabel}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <div className="laboratoryStoreStats">
         {(stats ?? []).map((s) => (

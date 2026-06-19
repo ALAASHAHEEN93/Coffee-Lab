@@ -845,7 +845,51 @@ export interface Home {
       }[]
     | null;
   /**
-   * Line under logo (e.g. MOLECULAR ROASTERY // STATION).
+   * Eyebrow above the operations title (e.g. PHASE_06 // OPS).
+   */
+  operationsPhase?: string | null;
+  operationsTitle?: string | null;
+  operationsIntro?: string | null;
+  /**
+   * LOGISTICS, EXCHANGES, COLLECTIVE, TERMINAL — anchor must match footer href (logistics, exchange, collective, terminal).
+   */
+  operationsPanels?:
+    | {
+        anchor: 'logistics' | 'exchange' | 'collective' | 'terminal';
+        label: string;
+        /**
+         * e.g. NOMINAL, OPEN, ONLINE
+         */
+        status?: string | null;
+        title: string;
+        body?: string | null;
+        metrics?:
+          | {
+              key: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        feed?:
+          | {
+              /**
+               * e.g. LOG-4102
+               */
+              code?: string | null;
+              message: string;
+              id?: string | null;
+            }[]
+          | null;
+        ctaLabel?: string | null;
+        /**
+         * Optional CTA link.
+         */
+        ctaHref?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Line under logo (e.g. MOLECULAR ROASTERY // KÖLN).
    */
   footerTagline?: string | null;
   footerMission?: string | null;
@@ -1166,6 +1210,35 @@ export interface HomeSelect<T extends boolean = true> {
         readMinutes?: T;
         date?: T;
         href?: T;
+        id?: T;
+      };
+  operationsPhase?: T;
+  operationsTitle?: T;
+  operationsIntro?: T;
+  operationsPanels?:
+    | T
+    | {
+        anchor?: T;
+        label?: T;
+        status?: T;
+        title?: T;
+        body?: T;
+        metrics?:
+          | T
+          | {
+              key?: T;
+              value?: T;
+              id?: T;
+            };
+        feed?:
+          | T
+          | {
+              code?: T;
+              message?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaHref?: T;
         id?: T;
       };
   footerTagline?: T;
