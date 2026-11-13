@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { IS_STATIC_DEMO, withBase } from '@/lib/withBase'
 
 type Locale = 'de' | 'en'
 
@@ -17,6 +18,11 @@ export function LanguageToggle({
   const setLocale = (next: Locale) => {
     if (next === locale) return
     if (typeof window === 'undefined') return
+    if (IS_STATIC_DEMO) {
+      // Static demo: one pre-rendered page per language (/ = German, /en/ = English)
+      window.location.assign(withBase(next === 'en' ? '/en/' : '/') + (window.location.hash || ''))
+      return
+    }
     const back =
       window.location.pathname + window.location.search + (window.location.hash || '')
     window.location.assign(

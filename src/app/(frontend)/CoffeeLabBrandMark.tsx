@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
+import { withBase } from '@/lib/withBase'
 
 const LOGO_ICON_SRC = '/images/coffeelab-logo-icon.png'
 
@@ -27,7 +28,7 @@ export function CoffeeLabBrandMark({
     <div className={rootClass} role="img" aria-label={siteName}>
       <span className="coffeeLabBrandMark__iconWrap" aria-hidden>
         <Image
-          src={LOGO_ICON_SRC}
+          src={withBase(LOGO_ICON_SRC)}
           alt=""
           width={iconPx}
           height={iconPx}

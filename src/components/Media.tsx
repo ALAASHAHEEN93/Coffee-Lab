@@ -3,11 +3,12 @@
 import Image from 'next/image'
 import type { Media as MediaType } from '@/payload-types'
 import React from 'react'
+import { withBase } from '@/lib/withBase'
 
 function resolveUrl(resource: MediaType | string | null | undefined): string | null {
   if (!resource) return null
   if (typeof resource === 'string') {
-    return resource.startsWith('/') ? resource : null
+    return resource.startsWith('/') ? withBase(resource) : null
   }
   if (typeof resource === 'object' && resource !== null && 'url' in resource && resource.url) {
     return resource.url

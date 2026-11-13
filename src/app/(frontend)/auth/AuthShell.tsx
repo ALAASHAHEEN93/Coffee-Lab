@@ -1,5 +1,6 @@
 import React from 'react'
 import { CoffeeLabLogo } from '../CoffeeLabLogo'
+import { withBase } from '@/lib/withBase'
 
 export function AuthShell({
   title,
@@ -14,7 +15,7 @@ export function AuthShell({
     <div className="authPage">
       <div className="authPageBg" aria-hidden />
       <header className="authTopbar">
-        <a className="logoHomeLink" href="/" aria-label="CoffeeLab — home">
+        <a className="logoHomeLink" href={withBase('/')} aria-label="CoffeeLab — home">
           <CoffeeLabLogo siteName="CoffeeLab" size="header" />
         </a>
       </header>

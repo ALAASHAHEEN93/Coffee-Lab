@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import './styles.css'
+import { withBase } from '@/lib/withBase'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
@@ -13,11 +14,11 @@ export const metadata: Metadata = {
   applicationName: 'CoffeeLab',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: withBase('/favicon.svg'), type: 'image/svg+xml' },
+      { url: withBase('/favicon-32.png'), sizes: '32x32', type: 'image/png' },
     ],
-    apple: '/apple-touch-icon.png',
-    shortcut: '/favicon-32.png',
+    apple: withBase('/apple-touch-icon.png'),
+    shortcut: withBase('/favicon-32.png'),
   },
 }
 

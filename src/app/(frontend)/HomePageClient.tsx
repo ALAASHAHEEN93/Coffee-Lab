@@ -14,6 +14,7 @@ import { OperationsHub } from './OperationsHub'
 import { CartProvider, useCart } from './CartContext'
 import { CartDrawer } from './CartDrawer'
 import { LanguageToggle } from '@/components/LanguageToggle'
+import { withBase } from '@/lib/withBase'
 import './styles.css'
 
 /** Default hero when CMS has no `heroBackground` (coffee / coaster photo). */
@@ -310,7 +311,7 @@ function HomePageClientInner({
             <Media resource={heroBg} fill className="heroBgImage" sizes="100vw" priority />
           ) : (
             <Image
-              src={HERO_FALLBACK_SRC}
+              src={withBase(HERO_FALLBACK_SRC)}
               alt=""
               fill
               className="heroBgImage"
@@ -322,7 +323,7 @@ function HomePageClientInner({
         <div className="heroBgOverlay" aria-hidden="true" />
         <header className="topbar">
           <div className="logoWrap">
-            <a className="logoHomeLink" href="/" aria-label={cms.siteName ?? 'CoffeeLab'}>
+            <a className="logoHomeLink" href={withBase('/')} aria-label={cms.siteName ?? 'CoffeeLab'}>
               <CoffeeLabLogo logo={cms.siteLogo} siteName={cms.siteName} priority size="header" />
             </a>
           </div>
@@ -339,7 +340,7 @@ function HomePageClientInner({
 
           <div className="topbarRight">
             <div className="navIcons">
-              <a className="iconButton" href="/account" aria-label={cms.accountAriaLabel ?? 'Account'}>
+              <a className="iconButton" href={withBase('/account')} aria-label={cms.accountAriaLabel ?? 'Account'}>
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="8" r="3.3" />
                   <path d="M5.6 18.2c1.7-2.7 4.1-4.1 6.4-4.1s4.7 1.4 6.4 4.1" />

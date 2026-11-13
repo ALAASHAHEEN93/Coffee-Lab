@@ -4556,3 +4556,27 @@ input:focus-visible {
   }
 
 }
+
+/* Phones: keep the espresso / filter switch and the operations tabs inside the screen */
+@media (max-width: 560px) {
+  .calibration {
+    flex-wrap: wrap;
+  }
+
+  .brewToggle {
+    width: 100%;
+  }
+
+  .brewToggle button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0.75rem 0.5rem;
+    letter-spacing: 0.14em;
+    gap: 0.5rem;
+  }
+
+  .operationsTabBar {
+    max-width: calc(100vw - 2rem);
+  }
+}
